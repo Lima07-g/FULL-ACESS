@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment</title>
+  <style>
+    /* General Body Style */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f2f2f7; /* Apple's subtle gray background */
+    }
+
+    /* Payment Button */
+    .action-button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 500;
+      color: white;
+      background-color: #007aff; /* Vibrant Apple blue */
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 122, 255, 0.2);
+    }
+
+    .action-button:hover {
+      background-color: #0056cc;
+      transform: scale(1.02);
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content p {
+      font-size: 18px;
+      font-weight: 500;
+      color: #333333; /* Dark text for readability */
+      margin-bottom: 20px;
+    }
+
+    /* Modal Buttons */
+    .modal-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .yes-button {
+      background-color: #32d74b; /* Apple's green */
+      color: white;
+    }
+
+    .yes-button:hover {
+      background-color: #28a83d;
+      transform: scale(1.02);
+    }
+
+    .no-button {
+      background-color: #ff453a; /* Apple's red */
+      color: white;
+    }
+
+    .no-button:hover {
+      background-color: #d9362e;
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body>
+  <button class="action-button" onclick="showModal()">Pay with PayPal or Card</button>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal" style="display: none;">
+    <div class="modal-content">
+      <p>Payments via Binance are processed manually. This means you will need to enter a private chat with support to complete your purchase. Do you wish to continue?</p>
+      <div class="modal-buttons">
+        <button class="yes-button" onclick="redirectToTelegram()">Yes</button>
+        <button class="no-button" onclick="closeModal()">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Show the modal
+    function showModal() {
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    // Close the modal
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    // Redirect to Telegram
+    function redirectToTelegram() {
+      window.location.href = "https://t.me/cleyadmin"; // Replace with your Telegram link
+    }
+  </script>
+</body>
+</html>

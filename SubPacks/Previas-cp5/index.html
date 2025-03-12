@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cp-5 previews</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 60px;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .sidebar img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 0px;
+            padding: 0px;
+        }
+
+        /* Video carousel section */
+        .video-carousel {
+            width: 100%;
+            position: relative;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 500px;
+        }
+
+        .swiper-slide {
+            position: relative;
+        }
+
+        .swiper-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Video overlay controls */
+        .video-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .video-controls button {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .video-controls button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .video-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 15px;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        .video-info b{
+            color: rgb(111, 109, 109);
+        }
+
+        /* Fixed top bar on scroll */
+        .top-bar {
+            position: fixed;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Fundo preto translúcido */
+            backdrop-filter: blur(15px); /* Aplica o blur */
+            -webkit-backdrop-filter: blur(15px); 
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: top 0.3s ease;
+            filter: blur(0.5);
+
+            
+           
+            
+        }
+
+
+        .top-bar.show {
+            top: 0;
+        }
+    .main-content h1{
+        text-align: center;
+        position: fixed ;
+        position: relative;
+    }
+    .top-bar b{
+    color: #007AFF
+
+    }
+
+
+.carousel {
+   position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-title {
+
+    font-size: 1.8rem;
+    margin: 20px 0px;
+    color: #fff;
+    text-align: center;
+}
+
+.carousel-items {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.carousel-item {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.video-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Controles */
+.controls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    
+}
+
+.video-wrapper.active .controls {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.control-button {
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+   
+}
+
+.control-button:hover {
+    transform: scale(1.1);
+}
+
+.progress-bar-container {
+    flex: 1;
+}
+
+.progress-bar {
+    width: 100%;
+    appearance: none;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.progress-bar::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+/* Indicadores */
+.carousel-indicators {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.indicator.active {
+    background: #fff;
+}
+
+/* Botões de Navegação */
+.nav-buttons {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    transform: translateY(-50%);
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.nav-button:hover {
+    transform: scale(1.1);
+}
+/* Botão estilo Apple TV */
+.pay-now-button {
+        position: absolute;
+        bottom: 60px; /* Posição na parte inferior */
+        left: 20px; /* Alinhado à esquerda */
+        display: inline-block;
+        padding: 12px 24px; /* Botão maior */
+        background: rgba(255, 255, 255, 0.95); /* Quase branco */
+        color: #000; /* Texto preto */
+        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 16px; /* Tamanho maior da fonte */
+        font-weight: 600; /* Negrito */
+        border-radius: 4px; /* Bordas menos arredondadas */
+        text-align: center;
+        text-decoration: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Sombra leve */
+        border: none;
+        bottom: 100px;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+        z-index: 10; /* Sobre o vídeo */
+    }
+
+    .pay-now-button:hover {
+        background: rgba(255, 255, 255, 1); /* Mais branco no hover */
+        transform: scale(1.1); /* Leve aumento no hover */
+    }
+
+
+        /* Pop-up */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .popup-content h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .apple-button {
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            padding: 15px 20px;
+            margin: 10px auto;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(180deg, #e5e5e5, #d4d4d4);
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .apple-button:hover {
+            background: linear-gradient(180deg, #d4d4d4, #b5b5b5);
+            transform: scale(1.03);
+        }
+
+        .close-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #ff3b30;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .close-btn:hover {
+            background: #d22b24;
+        }
+         /* Botão estilo Apple para voltar */
+    .back-button {
+        position: absolute;
+        top: 20px; /* Posição superior */
+        left: 20px; /* Alinhado à esquerda */
+        display: inline-flex;
+        align-items: center; /* Centraliza o ícone e texto */
+        padding: 10px 16px; /* Tamanho do botão */
+        background: none; /* Fundo transparente */
+        color: #1e88f3; /* Azul no estilo Apple */
+        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 16px; /* Tamanho da fonte */
+        font-weight: 600; /* Negrito */
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s ease-in-out;
+        z-index: 20; /* Sobre os vídeos */
+        text-shadow:1px 1px 1px #01070ec1;
+    }
+
+    .back-button:hover {
+        opacity: 0.7; /* Transparência ao passar o mouse */
+    }
+
+    /* Ícone de seta para trás (Font Awesome) */
+    .back-button i {
+        margin-right: 8px; /* Espaçamento com o texto */
+        font-size: 18px; /* Tamanho do ícone */
+    }
+    .bt{
+        margin: 50px 0px;
+        padding: 12px 24px; /* Botão maior */
+        background: rgba(255, 255, 255, 0.95); /* Quase branco */
+        color: #000; /* Texto preto */
+        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 16px; /* Tamanho maior da fonte */
+        font-weight: 600; /* Negrito */
+        border-radius: 4px; /* Bordas menos arredondadas */
+        text-align: center;
+        text-decoration: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Sombra leve */
+        border: none;
+        bottom: 100px;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+        z-index: 10; /* Sobre o vídeo */
+        width: 100%;
+    }
+
+    .carousel-items1 {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    .carousel-items1::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .carousel-items1::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 5px;
+    }
+
+    .carousel-item1{
+      flex: 0 0 200px;
+      height: 300px;
+      background: #333;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .carousel-item1:hover {
+      transform: scale(1.05);
+      transition: 0.3s;
+    }
+    .ban{
+        position: absolute;
+        top: 0px; /* Posição superior */
+        left: 20px; /* Alinhado à esquerda */
+        display: inline-flex;
+        align-items: center; /* Centraliza o ícone e texto */
+        padding: 10px 16px; /* Tamanho do botão */
+        background: none; /* Fundo transparente */
+        color: #1e88f3; /* Azul no estilo Apple */
+        font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        font-size: 16px; /* Tamanho da fonte */
+        font-weight: 600; /* Negrito */
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s ease-in-out;
+        z-index: 20; /* Sobre os vídeos */
+        text-shadow:1px 1px 1px #01070ec1;
+    }
+    
+    .play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 20px;
+  background-color: #e2d7d7ce;
+  color: #fff;
+  text-shadow:1px 1px 1px #292828;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+  font-weight: 600; /* Negrito */
+  filter: blur(1);
+  
+
+
+  
+        
+}
+
+.play-button:hover {
+  opacity: 1;
+}
+
+.play-button.vturb {
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+   
+    </style>
+</head>
+<body>
+
+    
+
+    <div class="main-content">
+        <div class="video-carousel">
+            <h1>Cp-5 previews</h1>
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <video id="videoElement" src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay muted loop></video>
+                        <p>                        </p>
+                        <div class="video-info">
+                            <P><b>☠︎</b>INCEST </P> 
+                                <P><b>☠︎</b>BLACKMAIL VIDEOS </P>
+                            <P><b>☠︎</b>21GB </P>
+                            <P><b>☠︎</b>MEGA LINK</P>
+                        </div>
+                        
+                        <div class="video-controls">
+                            <button id="btnPlayPause">Pause</button>
+                            <button id="btnMuteUnmute">Unmute</button>
+                        </div>
+                        <button class="pay-now-button" onclick="openPopup()">Pay Now $35 USD</button>
+                        <a href="#" class="back-button" onclick="redirectToPage()">
+                            <i class="fas fa-chevron-left"></i> Back
+                        </a>
+                    </div>
+                    
+                <!-- Add navigation arrows -->
+                <div class="swiper-button-next" ></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+    <div class="carousel">
+        <h2 class="carousel-title">Content previews</h2>
+        <div class="carousel-items">
+            <!-- Item 1 -->
+            <div class="carousel-item">
+                <div class="video-wrapper">
+                    <video class="video-player" id="videoPlayer1" muted>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    </video>
+                    <button id="playButton1" class="play-button vturb">Clique para assistir</button>
+                    <div class="controls">
+                        <button id="playPauseButton1" class="control-button">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button id="muteButton1" class="control-button">
+                            <i class="fas fa-volume-mute"></i>
+                        </button>
+                        <div class="progress-bar-container">
+                            <input id="progressBar1" class="progress-bar" type="range" value="0" max="100" step="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Item 2 -->
+            <div class="carousel-item">
+                <div class="video-wrapper">
+                    <video class="video-player" id="videoPlayer2"  muted>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    </video>
+                    <div class="controls">
+                        <button id="playPauseButton2" class="control-button">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button id="muteButton2" class="control-button">
+                            <i class="fas fa-volume-mute"></i>
+                        </button>
+                        <div class="progress-bar-container">
+                            <input id="progressBar2" class="progress-bar" type="range" value="0" max="100" step="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Item 3 -->
+            <div class="carousel-item">
+                <div class="video-wrapper">
+                    <video class="video-player" id="videoPlayer3" muted>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    </video>
+                    <div class="controls">
+                        <button id="playPauseButton3" class="control-button">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button id="muteButton3" class="control-button">
+                            <i class="fas fa-volume-mute"></i>
+                        </button>
+                        <div class="progress-bar-container">
+                            <input id="progressBar3" class="progress-bar" type="range" value="0" max="100" step="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+            <span class="indicator active"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+        </div>
+    
+        <!-- Botões de Navegação -->
+        <div class="nav-buttons">
+            <button id="prevButton" class="swiper-button-next" style="background-color: transparent; border: none ; outline: none;"></button>
+            <button id="nextButton" class="swiper-button-prev" style="background-color: transparent; border: none ; outline: none;"></button>
+        </div>
+    </div>
+  <button class="bt" onclick="openPopup()">Pay Now $30 USD</button>
+  <div class="caro">
+    <h2>Related content</h2>
+    <div class="carousel-items1">
+      <div class="carousel-item1">
+        <a href="https://example.com/page1" target="_blank">
+          <img src="https://via.placeholder.com/300x200" alt="Image 1">
+        </a>
+      </div>
+      <div class="carousel-item1">
+        <a href="https://example.com/page2" target="_blank">
+          <img src="https://via.placeholder.com/300x200" alt="Image 2">
+        </a>
+      </div>
+      <div class="carousel-item1">
+        <a href="https://example.com/page3" target="_blank">
+          <img src="https://via.placeholder.com/300x200" alt="Image 3">
+        </a>
+      </div>
+    </div>
+  </div>
+    <!-- Pop-up -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <h2>Select Payment Option</h2>
+    <button class="apple-button" onclick="redirectTo('https://www.paypal.com')">Pay with PayPal or Card</button>
+    <button class="apple-button" onclick="redirectTo('https://www.binance.com')">Pay with Binance</button>
+    <button id="closePopup" class="close-btn">Close</button>
+  </div>
+</div>
+
+    <div class="top-bar" id="topBar"> <a href="#" class="ban" onclick="redirectToPage()">
+        <i class="fas fa-chevron-left"></i> Back
+    </a>BEST SELLERS <b>+</b></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // Swiper initialization
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // Scroll event for top bar
+        const topBar = document.getElementById('topBar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                topBar.classList.add('show');
+            } else {
+                topBar.classList.remove('show');
+            }
+        });
+
+        // Video controls
+        document.querySelectorAll('.video-controls').forEach((control, index) => {
+            const playPause = control.querySelector(`#playPause${index + 1}`);
+            const muteUnmute = control.querySelector(`#muteUnmute${index + 1}`);
+            const video = document.querySelectorAll('video')[index];
+
+            playPause.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                    playPause.textContent = 'Pause';
+                } else {
+                    video.pause();
+                    playPause.textContent = 'Play';
+                }
+            });
+
+            muteUnmute.addEventListener('click', () => {
+                video.muted = !video.muted;
+                muteUnmute.textContent = video.muted ? 'Unmute' : 'Mute';
+            });
+        });
+    </script>
+    <script>
+        // Função para abrir o pop-up
+        function openPopup() {
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        // Função para fechar o pop-up
+        document.getElementById("closePopup").addEventListener("click", function () {
+            document.getElementById("popup").style.display = "none";
+        });
+
+        // Redirecionar para um site específico
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+    const carouselItems = document.querySelector(".carousel-items");
+    const indicators = document.querySelectorAll(".indicator");
+    const prevButton = document.getElementById("prevButton");
+    const nextButton = document.getElementById("nextButton");
+    let currentIndex = 0;
+
+    // Navegação do Carrossel
+    prevButton.addEventListener("click", () => changeSlide(-1));
+    nextButton.addEventListener("click", () => changeSlide(1));
+
+    function changeSlide(direction) {
+        currentIndex = (currentIndex + direction + indicators.length) % indicators.length;
+        updateCarousel();
+    }
+
+    function updateCarousel() {
+        carouselItems.style.transform = `translateX(-${currentIndex * 100}%)`;
+        indicators.forEach((indicator, i) =>
+            indicator.classList.toggle("active", i === currentIndex)
+        );
+    }
+
+    // Configurar vídeos de forma dinâmica
+    const videoWrappers = document.querySelectorAll(".video-wrapper");
+
+    videoWrappers.forEach((wrapper, index) => {
+        const videoPlayer = wrapper.querySelector(".video-player");
+        const playPauseButton = wrapper.querySelector(".control-button:first-of-type");
+        const muteButton = wrapper.querySelector(".control-button:nth-of-type(2)");
+        const progressBar = wrapper.querySelector(".progress-bar");
+
+        // Mostrar/Esconder controles
+        let controlTimeout;
+        videoPlayer.addEventListener("click", () => {
+            wrapper.classList.add("active");
+            clearTimeout(controlTimeout);
+            controlTimeout = setTimeout(() => wrapper.classList.remove("active"), 3000);
+        });
+
+        // Botões Play/Pause
+        playPauseButton.addEventListener("click", () => {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                videoPlayer.pause();
+                playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
+
+        // Botões Mudo/Desmudo
+        muteButton.addEventListener("click", () => {
+            videoPlayer.muted = !videoPlayer.muted;
+            muteButton.innerHTML = videoPlayer.muted
+                ? '<i class="fas fa-volume-mute"></i>'
+                : '<i class="fas fa-volume-up"></i>';
+        });
+
+        // Atualizar barra de progresso
+        videoPlayer.addEventListener("timeupdate", () => {
+            progressBar.value = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+        });
+
+        progressBar.addEventListener("input", () => {
+            videoPlayer.currentTime = (progressBar.value / 100) * videoPlayer.duration;
+        });
+    });
+});
+// Monitorar o evento de scroll
+window.addEventListener('scroll', function() {
+    var topBar = document.getElementById('bottonBar');
+    
+    // Verificar a posição do scroll
+    if (window.scrollY > 50) {
+        // Mostrar a top-bar se o scroll ultrapassar 50px
+        topBar.style.display = 'block';
+    } else {
+        // Caso contrário, ocultá-la
+        topBar.style.display = 'none';
+    }
+});  
+// Seleção dos elementos
+const videoElement = document.getElementById('videoElement');
+const playPauseButtonUnique = document.getElementById('btnPlayPause'); // Nome único
+const muteUnmuteButtonUnique = document.getElementById('btnMuteUnmute'); // Nome único
+
+// Alternar entre Play e Pause
+playPauseButtonUnique.addEventListener('click', () => {
+    if (videoElement.paused) {
+        videoElement.play();
+        playPauseButtonUnique.textContent = 'Pause';
+    } else {
+        videoElement.pause();
+        playPauseButtonUnique.textContent = 'Play';
+    }
+});
+
+// Alternar entre Mute e Unmute
+muteUnmuteButtonUnique.addEventListener('click', () => {
+    if (videoElement.muted) {
+        videoElement.muted = false;
+        muteUnmuteButtonUnique.textContent = 'Mute';
+    } else {
+        videoElement.muted = true;
+        muteUnmuteButtonUnique.textContent = 'Unmute';
+    }
+});
+
+
+    // Primeiro vídeo - Reprodução manual com botão
+    const playButton1 = document.getElementById('playButton1');
+const videoPlayer1 = document.getElementById('videoPlayer1');
+
+playButton1.addEventListener('click', () => {
+    videoPlayer1.play();
+    playButton1.style.display = 'none'; // Esconde o botão após o clique
+});
+
+// Segundo e terceiro vídeos - Reprodução automática ao término do anterior
+const videoPlayer2 = document.getElementById('videoPlayer2');
+const videoPlayer3 = document.getElementById('videoPlayer3');
+
+// Quando o vídeo 1 terminar, inicia o vídeo 2
+videoPlayer1.addEventListener('ended', () => {
+    videoPlayer2.play();
+});
+
+// Quando o vídeo 2 terminar, inicia o vídeo 3
+videoPlayer2.addEventListener('ended', () => {
+    videoPlayer3.play();
+});
+ </script>
+<script>
+    function redirectToPage() {
+        try {
+            // Caminho correto para o arquivo
+            const filePath = "../../Raiz/index.html"; // Ajuste conforme necessário
+            
+            // Redirecionar usando window.location
+            window.location.href = filePath;
+        } catch (error) {
+            console.error("Erro ao redirecionar:", error);
+            alert("Não foi possível redirecionar. Verifique o caminho do arquivo.");
+        }
+    }
+</script>
+</body>
+</html>
